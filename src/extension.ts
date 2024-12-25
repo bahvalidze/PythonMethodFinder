@@ -10,8 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         const text = editor.document.getText();
         
-        const functionRegex = /def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/g;
-        const methodsRegex = /def\s+([a-zA-Z_][a-zA0-9_]*)\s*\(self/g;
+        const functionRegex = /def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\((.*?)\)/g;
 
         const functions: { name: string, position: vscode.Position }[] = [];
         const methods: { name: string, position: vscode.Position }[] = [];
@@ -19,12 +18,17 @@ export function activate(context: vscode.ExtensionContext) {
 
         while ((match = functionRegex.exec(text)) !== null) {
             const position = editor.document.positionAt(match.index);
-            if (match[0].includes('self')) {
-                methods.push({ name: match[1], position });
+            const functionName = match[1];
+            const argumentsList = match[2] || ''; 
+        
+            if (argumentsList.includes('self')) {
+                methods.push({ name: functionName, position });
             } else {
-                functions.push({ name: match[1], position });
+                functions.push({ name: functionName, position });
             }
         }
+        
+        
 
         if (functions.length === 0 && methods.length === 0) {
             vscode.window.showInformationMessage('No methods or functions found!');

@@ -6,6 +6,11 @@
   "engines": {
     "vscode": "^1.96.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bahvalidze/PythonMethodFinder.git"
+  },
+  "publisher": "SausageInFather-in-law",
   "categories": [
     "Other"
   ],
